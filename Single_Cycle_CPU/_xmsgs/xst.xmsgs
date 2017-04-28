@@ -5,7 +5,7 @@
      behavior or data corruption.  It is strongly advised that
      users do not edit the contents of this file. -->
 <messages>
-<msg type="warning" file="HDLCompiler" num="1335" delta="old" >"E:\Study\Coumputer Science\s2\computer orgization\ex\Single_Cycle_CPU\control.v" Line 22: Port <arg fmt="%s" index="1">inst</arg> must not be declared to be an array
+<msg type="warning" file="HDLCompiler" num="1335" delta="old" >"E:\Study\Coumputer Science\s2\computer orgization\project\Single_Cycle_CPU\control.v" Line 22: Port <arg fmt="%s" index="1">inst</arg> must not be declared to be an array
 </msg>
 
 </messages>

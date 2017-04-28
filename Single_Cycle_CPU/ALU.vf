@@ -1,0 +1,89 @@
+////////////////////////////////////////////////////////////////////////////////
+// Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.
+////////////////////////////////////////////////////////////////////////////////
+//   ____  ____ 
+//  /   /\/   / 
+// /___/  \  /    Vendor: Xilinx 
+// \   \   \/     Version : 14.7
+//  \   \         Application : sch2hdl
+//  /   /         Filename : ALU.vf
+// /___/   /\     Timestamp : 04/28/2017 11:49:47
+// \   \  /  \ 
+//  \___\/\___\ 
+//
+//Command: C:\Xilinx\14.7\ISE_DS\ISE\bin\nt64\unwrapped\sch2hdl.exe -intstyle ise -family kintex7 -verilog ALU.vf -w "E:/Study/Coumputer Science/s2/computer orgization/project/Single_Cycle_CPU/ALU.sch"
+//Design Name: ALU
+//Device: kintex7
+//Purpose:
+//    This verilog netlist is translated from an ECS schematic.It can be 
+//    synthesized and simulated, but it should not be modified. 
+//
+`timescale 1ns / 1ps
+
+module ALU(A, 
+           ALU_operation, 
+           B, 
+           overflow, 
+           res, 
+           zero);
+
+    input [31:0] A;
+    input [2:0] ALU_operation;
+    input [31:0] B;
+   output overflow;
+   output [31:0] res;
+   output zero;
+   
+   wire N0;
+   wire [32:0] S;
+   wire [31:0] XLXN_14;
+   wire [31:0] XLXN_19;
+   wire [31:0] XLXN_20;
+   wire [31:0] XLXN_21;
+   wire [31:0] XLXN_40;
+   wire [31:0] XLXN_45;
+   wire [31:0] res_DUMMY;
+   
+   assign res[31:0] = res_DUMMY[31:0];
+   ADC32  XLXI_1 (.A(A[31:0]), 
+                 .B(B[31:0]), 
+                 .C0(ALU_operation[2]), 
+                 .S(S[32:0]));
+   and32  XLXI_2 (.A(A[31:0]), 
+                 .B(B[31:0]), 
+                 .res(XLXN_14[31:0]));
+   xor32  XLXI_4 (.A(A[31:0]), 
+                 .B(B[31:0]), 
+                 .res(XLXN_19[31:0]));
+   nor32  XLXI_5 (.A(A[31:0]), 
+                 .B(B[31:0]), 
+                 .res(XLXN_20[31:0]));
+   srl32  XLXI_6 (.A(A[31:0]), 
+                 .B(B[31:0]), 
+                 .res(XLXN_21[31:0]));
+   MUX8T1_32  XLXI_9 (.I0(XLXN_14[31:0]), 
+                     .I1(XLXN_40[31:0]), 
+                     .I2(S[31:0]), 
+                     .I3(XLXN_19[31:0]), 
+                     .I4(XLXN_20[31:0]), 
+                     .I5(XLXN_21[31:0]), 
+                     .I6(S[31:0]), 
+                     .I7(XLXN_45[31:0]), 
+                     .s(ALU_operation[2:0]), 
+                     .o(res_DUMMY[31:0]));
+   GND  XLXI_11 (.G(N0));
+   or_bit_32  XLXI_12 (.A(res_DUMMY[31:0]), 
+                      .o(zero));
+   or32  XLXI_15 (.A(A[31:0]), 
+                 .B(B[31:0]), 
+                 .res(XLXN_40[31:0]));
+   overflow_32  XLXI_18 (.A(A[31]), 
+                        .B(B[31]), 
+                        .operation(ALU_operation[2:0]), 
+                        .S(S[31]), 
+                        .overflow(overflow));
+   slt32  XLXI_20 (.A(A[31:0]), 
+                  .B(B[31:0]), 
+                  .S(S[31:0]), 
+                  .slt(XLXN_45[31:0]));
+endmodule

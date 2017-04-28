@@ -8,7 +8,7 @@
 <!-- Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.    -->
 
 <messages>
-<msg type="info" file="ProjectMgmt" num="1845" ><arg fmt="%s" index="1">Analyzing Verilog file &quot;E:/Study/Coumputer Science/s2/computer orgization/ex/Single_Cycle_CPU/SCPU.v&quot; into library work</arg>
+<msg type="info" file="ProjectMgmt" num="1845" ><arg fmt="%s" index="1">Analyzing Verilog file &quot;E:/study/Coumputer Science/s2/computer orgization/project/Single_Cycle_CPU/SCPU.v&quot; into library work</arg>
 </msg>
 
 </messages>

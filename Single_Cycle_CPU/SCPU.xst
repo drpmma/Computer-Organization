@@ -1,5 +1,5 @@
-set -tmpdir "E:/Study/Coumputer Science/s2/computer orgization/ex/Single_Cycle_CPU/xst/projnav.tmp"
-set -xsthdpdir "E:/Study/Coumputer Science/s2/computer orgization/ex/Single_Cycle_CPU/xst"
+set -tmpdir "E:/study/Coumputer Science/s2/computer orgization/project/Single_Cycle_CPU/xst/projnav.tmp"
+set -xsthdpdir "E:/study/Coumputer Science/s2/computer orgization/project/Single_Cycle_CPU/xst"
 run -compileonly yes
 -p xc7k160t-2L-ffg676
 -top SCPU
