@@ -99,6 +99,10 @@
       <association xil_pn:name="BehavioralSimulation" xil_pn:seqID="47"/>
       <association xil_pn:name="Implementation" xil_pn:seqID="16"/>
     </file>
+    <file xil_pn:name="ALU_ctrl.v" xil_pn:type="FILE_VERILOG">
+      <association xil_pn:name="BehavioralSimulation" xil_pn:seqID="48"/>
+      <association xil_pn:name="Implementation" xil_pn:seqID="48"/>
+    </file>
   </files>
 
   <properties>
