@@ -1,0 +1,4 @@
+verilog work "single_pc_plus4.v"
+verilog work "single_pc.v"
+verilog work "control.v"
+verilog work "SCPU.v"
