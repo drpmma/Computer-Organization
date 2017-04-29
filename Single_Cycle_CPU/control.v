@@ -27,7 +27,8 @@ module control(
 			output reg [1:0]ALUOp,
 			output reg MemWrite,
 			output reg ALUSrc,
-			output reg RegWrite
+			output reg RegWrite,
+			output reg Jump
     );
 
 	initial begin
@@ -39,7 +40,9 @@ module control(
 	  MemWrite = 0;
 	  ALUSrc = 0;
 	  RegWrite = 0;
+	  Jump = 0;
 	end
+
 	always@ * begin
 	  if (inst == 0) begin		// Rtype
 		RegDst = 1;
@@ -58,6 +61,9 @@ module control(
 	  if (inst == 6'h4) begin	// beq
 		ALUop = 2'b01;
 		Branch = 1;
+	  end
+	  if (inst == 6'h2) begin	// j
+		Jump = 1;
 	  end
 	end
 
