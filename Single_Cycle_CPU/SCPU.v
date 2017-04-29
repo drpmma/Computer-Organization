@@ -48,13 +48,13 @@ module SCPU(clk,
 	
 	assign PC_out = o_pc;
 
-	wire [1:0]ALUop;
+	wire [2:0]ALUop;
 	wire [31:0]addr;
 	wire [4:0]w_reg;
 	wire [31:0]rdata_A, rdata_B;
 	assign Data_out = rdata_B;
 	wire [31:0]ALU_B;
-	wire [3:0]ALU_ctrl;
+//	wire [3:0]ALU_ctrl;
 	wire [31:0]sign_shamt;
 	wire [31:0]ALU_res;
 	assign Addr_out = ALU_res;
@@ -66,11 +66,11 @@ module SCPU(clk,
 	single_pc PC(.clk(clk), .rst(reset), .i_pc(i_pc), .o_pc(o_pc));
 	add_32 PC_4(.a(o_pc), .b(4), .c(pc_4));
 
-	jump_addr jp(.inst(inst_in[25:0]), .pc_4(pc_4), .addr(addr));	// later to implement
+	jump_addr jp(.inst(inst_in[25:0]), .pc_4(pc_4), .addr(addr));
 	MUX2T1_32 mux2_32_jp(.I0(jp_src), .I1(addr), .s(Jump), .o(i_pc));
 
-	control CTRL(.inst(inst_in[31:26]), .RegDst(RegDst), .Branch(Branch), .MemRead(MemRead), .MemtoReg(MemtoReg), 
-				 .ALUop(ALUop), .MemWrite(MemWrite), .ALUSrc(ALUSrc), .RegWrite(RegWrite), .Jump(Jump));
+	control CTRL(.inst(inst_in), .RegDst(RegDst), .Branch(Branch), .MemRead(MemRead), .MemtoReg(MemtoReg), 
+				 .ALUop(ALUop), .MemWrite(MemWrite), .ALUSrc(ALUSrc), .RegWrite(RegWrite), .Jump(Jump), .BNE(BNE));
 				 
 	MUX2T1_5 mux_2_5_inst(.I0(inst_in[20:16]), .I1(inst_in[15:11]), .s(RegDst), .o(w_reg));		 
 	
@@ -80,15 +80,16 @@ module SCPU(clk,
 
 
 	add_32 Add(.a(pc_4), .b(sign_shamt << 2), .c(offset));
-	and32 And(.A(Branch), .B(zero), .res(Branch_ctrl));
+	xor32 Xor(.A(BNE), .B(zero), .res(bne_zero));
+	and32 And(.A(Branch), .B(bne_zero), .res(Branch_ctrl));
 	
 	MUX2T1_32 mux2_32_branch(.I0(pc_4), .I1(offset), .s(Branch_ctrl), .o(jp_src));
 	
 	MUX2T1_32 mux2_32_alusrc(.I0(rdata_B), .I1(sign_shamt), .s(ALUSrc), .o(ALU_B));
 
-	ALU_ctrl alu_ctrl(.funct(inst[5:0]), .aluop(ALUop), .alu_ctrl(ALU_ctrl));
+//	ALUcontrol alu_ctrl(.funct(inst[5:0]), .aluop(ALUop), .alu_ctrl(ALU_ctrl));
 	
-	ALU alu(.A(rdata_A), .B(ALU_B), .ALU_operation(ALU_ctrl),  
+	ALU alu(.A(rdata_A), .B(ALU_B), .ALU_operation(ALUop),  
            .overflow(), 
            .res(ALU_res), 
            .zero(zero));

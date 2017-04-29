@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <report-views version="2.0" >
  <header>
-  <DateModified>2017-04-28T12:02:08</DateModified>
+  <DateModified>2017-04-29T21:29:56</DateModified>
   <ModuleName>SCPU</ModuleName>
   <SummaryTimeStamp>Unknown</SummaryTimeStamp>
   <SavedFilePath>E:/Study/Coumputer Science/s2/computer orgization/project/Single_Cycle_CPU/iseconfig/SCPU.xreport</SavedFilePath>
-  <ImplementationReportsDirectory>E:/study/Coumputer Science/s2/computer orgization/project/Single_Cycle_CPU</ImplementationReportsDirectory>
+  <ImplementationReportsDirectory>E:/Study/Coumputer Science/s2/computer orgization/project/Single_Cycle_CPU\</ImplementationReportsDirectory>
   <DateInitialized>2017-04-28T11:49:06</DateInitialized>
   <EnableMessageFiltering>false</EnableMessageFiltering>
  </header>
