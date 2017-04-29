@@ -52,7 +52,7 @@ module SCPU(clk,
 	
 	single_pc PC(.clk(clk), .rst(reset), .i_pc(i_pc), .o_pc(o_pc));
 	add_32 PC_4(.a(o_pc), .b(4), .c(pc_4));
-	control CTRL(.inst(inst_in[31:26]), .RegDst(RegDst), .Branch(), .MemRead(), .MemtoReg(MemtoReg), 
+	control CTRL(.inst(inst_in[31:26]), .RegDst(RegDst), .Branch(Branch), .MemRead(MemRead), .MemtoReg(MemtoReg), 
 				 .ALUop(ALUop), .MemWrite(MemWrite), .ALUSrc(ALUSrc), .RegWrite(RegWrite));
 				 
 	wire [4:0]w_reg;
@@ -68,23 +68,25 @@ module SCPU(clk,
 
 	wire [31:0]offset;
 	add_32 Add(.a(pc_4), .b(sign_shamt << 2), .c(offset));
-	MUX2T1_32 mux2_32_1(.I0(pc_4), .I1(offset), .s(), .o(i_pc))
+	and32 And(.A(Branch), .B(zero), .res(Branch_ctrl));
+	
+	MUX2T1_32 mux2_32_1(.I0(pc_4), .I1(offset), .s(Branch_ctrl), .o(i_pc))
 	
 	wire [31:0]ALU_B;
 	
 	MUX2T1_32 mux2_32_2(.I0(rdata_B), .I1(sign_shamt), .s(ALUSrc), .o(ALU_B));
 	
-	ALU_ctrl alu_ctrl();
-	
+	wire [3:0]ALU_ctrl;
+	ALU_ctrl alu_ctrl(.funct(inst[5:0]), .aluop(ALUop), .alu_ctrl(ALU_ctrl));
 	wire [31:0]ALU_res;
 
 	assign Addr_out = ALU_res;
 	assign mem_w = MemWrite;
 
-	ALU alu(.A(rdata_A), .B(ALU_B), .ALU_operation(),  
+	ALU alu(.A(rdata_A), .B(ALU_B), .ALU_operation(ALU_ctrl),  
            .overflow(), 
            .res(ALU_res), 
-           .zero());
+           .zero(zero));
 	
 	wire [31:0]w_data;
 	MUX2T1_32 mux2_32_3(.I0(ALU_res), .I1(Data_in), .s(MemtoReg), .o(w_data));
