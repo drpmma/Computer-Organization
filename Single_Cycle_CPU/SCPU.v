@@ -49,6 +49,7 @@ module SCPU(clk,
 	wire [2:0]ALUop;
 	wire [31:0]addr;
 	wire [4:0]temp_reg;
+	wire [4:0]reg_a;
 	wire [4:0]w_reg;
 	wire [31:0]rdata_A, rdata_B;
 	wire [31:0]ALU_B;
@@ -72,9 +73,10 @@ module SCPU(clk,
 
 	control CTRL(.opcode(inst_in[31:26]), .funct(inst_in[5:0]), .RegDst(RegDst), .Branch(Branch), .MemRead(MemRead), .MemtoReg(MemtoReg), 
 				 .ALUop(ALUop), .MemWrite(MemWrite), .ALUSrc(ALUSrc), .RegWrite(RegWrite), .Jump(Jump), .BNE(BNE), .LUI(LUI), .signal(signal),
-				 .Jal(Jal), .Jr(Jr));
+				 .Jal(Jal), .Jr(Jr), .shift(shift));
 	assign mem_w = MemWrite;
-				 
+	
+	MUX2T1_32 mux2_32_shift(.I0(inst_in[25:21]), .I1(inst_in[20:16]), .s(shift), .o(reg_a));
 	MUX2T1_5 mux_2_5_inst(.I0(inst_in[20:16]), .I1(inst_in[15:11]), .s(RegDst), .o(temp_reg));	
 	MUX2T1_5 MUX2T1_5_jal(.I0(temp_reg), .I1(5'b11111), .s(Jal), .o(w_reg));	 
 
@@ -82,7 +84,7 @@ module SCPU(clk,
 
 	MUX2T1_32 MUX2T1_32_jal(.I0(temp_data_jal), .I1(pc_4), .s(Jal), .o(temp_data_lui));
 	MUX2T1_32 mux2_32_lui(.I0(temp_data_lui), .I1(lui_off), .s(LUI), .o(w_data));
-	regs Registers(.clk(clk), .rst(reset), .reg_Rd_addr_A(inst_in[25:21]), .reg_Rt_addr_B(inst_in[20:16]), .reg_Wt_addr(w_reg), 
+	regs Registers(.clk(clk), .rst(reset), .reg_Rd_addr_A(reg_a), .reg_Rt_addr_B(inst_in[20:16]), .reg_Wt_addr(w_reg), 
 					   .wdata(w_data), .we(RegWrite), .rdata_A(rdata_A), .rdata_B(rdata_B));
 	assign Data_out = rdata_B;
 	assign jr_addr = rdata_A;

@@ -36,7 +36,7 @@ module ALU(A, B, ALUop, zero, result);
 		3'b010: result = A + B;
 		3'b011: result = A ^ B;
 		3'b100: result = !(A | B);			// nor
-		3'b101: result = A >> B[10:6];	// srl
+		3'b101: result = A << B[10:6];	// srl
 		3'b110: result = A - B;
 		3'b111: result = res;
 		default: result = 0;
