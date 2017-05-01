@@ -71,12 +71,12 @@ module SCPU(clk,
 	Ext_32 se(.imm_16(inst_in[15:0]), .signal(signal), .Imm_32(sign_shamt));
 
 	control CTRL(.opcode(inst_in[31:26]), .funct(inst_in[5:0]), .RegDst(RegDst), .Branch(Branch), .MemRead(MemRead), .MemtoReg(MemtoReg), 
-				 .ALUop(ALUop), .MemWrite(MemWrite), .ALUSrc(ALUSrc), .RegWrite(RegWrite), .Jump(Jump), .BNE(BNE), .LUI(LUI), signal(signal),
+				 .ALUop(ALUop), .MemWrite(MemWrite), .ALUSrc(ALUSrc), .RegWrite(RegWrite), .Jump(Jump), .BNE(BNE), .LUI(LUI), .signal(signal),
 				 .Jal(Jal), .Jr(Jr));
 	assign mem_w = MemWrite;
 				 
 	MUX2T1_5 mux_2_5_inst(.I0(inst_in[20:16]), .I1(inst_in[15:11]), .s(RegDst), .o(temp_reg));	
-	MUX2T1_32 MUX2T1_5_jal(.I0(temp), .I1(5'b11111), .s(Jal), .o(w_reg));	 
+	MUX2T1_5 MUX2T1_5_jal(.I0(temp_reg), .I1(5'b11111), .s(Jal), .o(w_reg));	 
 
 	assign lui_off = inst_in << 16;
 

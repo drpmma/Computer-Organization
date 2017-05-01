@@ -20,7 +20,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 module Ext_32(input [15:0] imm_16,
 				  input signal,
-				  output[31:0] Imm_32
+				  output reg[31:0] Imm_32
 				 );
 	always @* begin
 		if(signal == 0)

@@ -51,7 +51,7 @@ module control(
 	assign LUI = (opcode == 6'hf) ? 1 : 0;
 	assign signal = (opcode == 6'hc || opcode == 6'hd || opcode == 6'he) ? 1 : 0;
 	assign Jal = (opcode == 6'h3) ? 1 : 0;
-	assign Jr = (opcode == 6'h8 || opcode == 6'h9) ? 1 : 0;			// Jr and Jalr
+	assign Jr = ((funct == 6'h8 || funct == 6'h9) && opcode == 6'h0) ? 1 : 0;			// Jr and Jalr
 	assign ALUop[2] = ( ((funct == 6'b100010 || funct == 6'b101010 || funct == 6'b000010) && opcode == 6'h0) || opcode == 6'h4 || opcode == 6'h5 || opcode == 6'ha) 
 						? 1 : 0;
 	assign ALUop[1] = ( ((funct == 6'b100000 || funct == 6'b100010 || funct == 6'b101010 || funct == 6'h26) && opcode == 6'h0) || opcode == 6'h23 
