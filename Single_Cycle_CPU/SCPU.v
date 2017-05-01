@@ -64,10 +64,10 @@ module SCPU(clk,
 	single_pc PC(.clk(clk), .rst(reset), .i_pc(i_pc), .o_pc(o_pc));
 	assign PC_out = o_pc;
 
-	Ext_32 se(.imm_16(inst_in[15:0]), .Imm_32(sign_shamt));
+	Ext_32 se(.imm_16(inst_in[15:0]), .signal(signal), .Imm_32(sign_shamt));
 
 	control CTRL(.opcode(inst_in[31:26]), .funct(inst_in[5:0]), .RegDst(RegDst), .Branch(Branch), .MemRead(MemRead), .MemtoReg(MemtoReg), 
-				 .ALUop(ALUop), .MemWrite(MemWrite), .ALUSrc(ALUSrc), .RegWrite(RegWrite), .Jump(Jump), .BNE(BNE), .LUI(LUI));
+				 .ALUop(ALUop), .MemWrite(MemWrite), .ALUSrc(ALUSrc), .RegWrite(RegWrite), .Jump(Jump), .BNE(BNE), .LUI(LUI), signal(signal));
 	assign mem_w = MemWrite;
 				 
 	MUX2T1_5 mux_2_5_inst(.I0(inst_in[20:16]), .I1(inst_in[15:11]), .s(RegDst), .o(w_reg));		 

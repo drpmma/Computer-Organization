@@ -26,7 +26,6 @@ module single_pc(clk,rst,i_pc,o_pc);
 	initial begin
 	  o_pc = 0;
 	end
-
 	always @(posedge clk or posedge rst)
 		if(rst == 1)
 			o_pc = 0;

@@ -19,9 +19,13 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 module Ext_32(input [15:0] imm_16,
+				  input signal,
 				  output[31:0] Imm_32
 				 );
-
-	assign Imm_32 = {{16{imm_16[15]}},imm_16};			//扩展为32位符号数
-	
+	always @* begin
+		if(signal == 0)
+			Imm_32 = {{16{imm_16[15]}},imm_16};			//扩展为32位符号数
+		else
+			Imm_32 = {{16{0}}, imm_16};
+		end
 endmodule
