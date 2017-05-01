@@ -3,9 +3,9 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date:    22:59:37 04/27/2017 
+// Create Date:    18:28:29 04/29/2017 
 // Design Name: 
-// Module Name:    single_pc_plus4 
+// Module Name:    jump_addr 
 // Project Name: 
 // Target Devices: 
 // Tool versions: 
@@ -18,12 +18,14 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module single_pc_plus4(
-				input [31:0] i_pc,
-				output [31:0] o_pc
+module jump_addr(
+				input [25:0]inst,
+				input [31:0]pc_4,
+				output [31:0]addr
     );
-	 
-	 assign o_pc = i_pc + 4;
 
+	wire [27:0]shift_inst;
+	assign shift_inst = inst << 2;
+	assign addr = {{pc_4[31:28]}, shift_inst};
 
 endmodule

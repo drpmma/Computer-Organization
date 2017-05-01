@@ -3,9 +3,9 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date:    19:49:30 04/27/2017 
+// Create Date:    22:06:51 12/28/2015 
 // Design Name: 
-// Module Name:    ALUcontrol 
+// Module Name:    MUX2T1_8 
 // Project Name: 
 // Target Devices: 
 // Tool versions: 
@@ -18,10 +18,12 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module ALUcontrol(
-			input [5:0]funct,
-			input [2:0]aluop
-    );
-
+module  MUX2T1_32(input[31:0]I0,
+						input[31:0]I1,
+						input s,
+						output[31:0]o
+						);
+						
+			assign o = s?I1:I0;			////32位2选一,I0、I1对应选择通道0、1
 
 endmodule
