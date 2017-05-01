@@ -1,0 +1,14 @@
+ISim log file
+Running: E:\Study\Coumputer Science\s2\computer orgization\project\Single_Cycle_CPU\test_CPU_isim_beh.exe -intstyle ise -gui -tclbatch isim.cmd -wdb E:/Study/Coumputer Science/s2/computer orgization/project/Single_Cycle_CPU/test_CPU_isim_beh.wdb 
+ISim P.20131013 (signature 0x7708f090)
+This is a Full version of ISim.
+WARNING: For instance uut/mux2_32_shift/, width 32 of formal port I0 is not equal to width 5 of actual.
+WARNING: For instance uut/mux2_32_shift/, width 32 of formal port I1 is not equal to width 5 of actual.
+WARNING: File "E:/Study/Coumputer Science/s2/computer orgization/project/Single_Cycle_CPU/SCPU.v" Line 52.  For instance uut/mux2_32_shift/, width 32 of formal port o is not equal to width 5 of actual signal reg_a.
+WARNING: File "E:/Study/Coumputer Science/s2/computer orgization/project/Single_Cycle_CPU/ALU.v" Line 31.  For instance alu/slt/, width 32 of formal port slt is not equal to width 1 of actual signal res.
+Time resolution is 1 ps
+# onerror resume
+# wave add /
+# run 1000 ns
+Simulator is doing circuit initialization process.
+Finished circuit initialization process.
