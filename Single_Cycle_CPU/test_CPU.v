@@ -61,7 +61,7 @@ integer i = 0;
 		inst_in = 0;
 		INT = 0;
 		MIO_ready = 0;
-		reset = 1;
+		reset = 0;
 
 		// Wait 100 ns for global reset to finish
 		#50;
@@ -79,14 +79,16 @@ integer i = 0;
 		
 		always @(PC_out) begin
 			case(PC_out)
-				32'h00000000: inst_in = 32'h20080005;
-				32'h00000004: inst_in = 32'h20090001;
-				32'h00000008: inst_in = 32'h200B0002;
-				32'h0000000c: inst_in = 32'h01095020;
-				32'h00000010: inst_in = 32'h000A50C0;
-				32'h00000014: inst_in = 32'h3C0C000A;
-				32'h00000018: inst_in = 32'h00006820;
-				32'h0000001c: inst_in = 32'h0C000001;
+//20080003, 20090004, 01285020, 8D280004, 01094027, 0149582A, 012A602A, 08000002;
+				32'h00000000: inst_in = 32'h20080003;
+				32'h00000004: inst_in = 32'h20090004;
+				32'h00000008: inst_in = 32'h01285020;
+				32'h0000000c: inst_in = 32'h8D280004;
+				32'h00000010: inst_in = 32'h01094027;
+				32'h00000014: inst_in = 32'h0149582A;
+				32'h00000018: inst_in = 32'h012A602A;
+				32'h0000001c: inst_in = 32'h08000002;
+				
 			endcase
 			i = i + 1;
 		end

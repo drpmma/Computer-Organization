@@ -14,8 +14,5 @@
 <msg type="warning" file="HDLCompiler" num="189" delta="unknown" >"E:/Study/Coumputer Science/s2/computer orgization/project/Single_Cycle_CPU/SCPU.v" Line 79: Size mismatch in connection of port &lt;<arg fmt="%s" index="3">I0</arg>&gt;. Formal port size is <arg fmt="%d" index="2">32</arg>-bit while actual signal size is <arg fmt="%d" index="1">5</arg>-bit.
 </msg>
 
-<msg type="warning" file="HDLCompiler" num="189" delta="unknown" >"E:/Study/Coumputer Science/s2/computer orgization/project/Single_Cycle_CPU/ALU.v" Line 31: Size mismatch in connection of port &lt;<arg fmt="%s" index="3">slt</arg>&gt;. Formal port size is <arg fmt="%d" index="2">32</arg>-bit while actual signal size is <arg fmt="%d" index="1">1</arg>-bit.
-</msg>
-
 </messages>
 

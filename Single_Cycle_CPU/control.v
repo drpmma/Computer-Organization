@@ -54,7 +54,7 @@ module control(
 	assign Jal = (opcode == 6'h3) ? 1 : 0;
 	assign Jr = ((funct == 6'h8 || funct == 6'h9) && opcode == 6'h0) ? 1 : 0;			// Jr and Jalr
 	assign shift = (opcode == 6'h0 && funct == 6'h0) ? 1 : 0;
-	assign ALUop[2] = ( ((funct == 6'b100010 || funct == 6'b101010 ||  funct == 6'h0) && opcode == 6'h0) || opcode == 6'h4 || opcode == 6'h5 || opcode == 6'ha) 
+	assign ALUop[2] = ( ((funct == 6'b100010 || funct == 6'b101010 ||  funct == 6'h0 || funct == 6'h27) && opcode == 6'h0) || opcode == 6'h4 || opcode == 6'h5 || opcode == 6'ha) 
 						? 1 : 0;
 	assign ALUop[1] = ( ((funct == 6'b100000 || funct == 6'b100010 || funct == 6'b101010 || funct == 6'h26) && opcode == 6'h0) || opcode == 6'h23 
 						|| opcode == 6'h2b || opcode == 6'h4 || opcode == 6'h5 || opcode == 6'h8 || opcode == 6'he || opcode == 6'ha)
