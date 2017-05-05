@@ -1,1 +1,0 @@
-vhdtdtfi -lang verilog -prj Single_Cycle_CPU -o "E:/Study/Coumputer Science/s2/computer orgization/project/Single_Cycle_CPU/control.tfi" -lib work "E:/Study/Coumputer Science/s2/computer orgization/project/Single_Cycle_CPU//control.v" -module control -template C:/Xilinx/14.7/ISE_DS/ISE//data/tfi.tft -deleteonerror 

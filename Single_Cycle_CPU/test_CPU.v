@@ -66,6 +66,7 @@ integer i = 0;
 		// Wait 100 ns for global reset to finish
 		#50;
 		reset = 0;
+		Data_in = 32'h5a5aa5a5;
 		// Add stimulus here
 	
 		forever begin
@@ -79,14 +80,15 @@ integer i = 0;
 		
 		always @(PC_out) begin
 			case(PC_out)
-//20080003, 20090004, 01285020, 8D280004, 01094027, 0149582A, 012A602A, 08000002;
-				32'h00000000: inst_in = 32'h20080003;
-				32'h00000004: inst_in = 32'h20090004;
-				32'h00000008: inst_in = 32'h01285020;
-				32'h0000000c: inst_in = 32'h8D280004;
-				32'h00000010: inst_in = 32'h01094027;
-				32'h00000014: inst_in = 32'h0149582A;
-				32'h00000018: inst_in = 32'h012A602A;
+//2008FFFF, 200E0004, 01CE5020, 8D0A0003, AD0C0008, 01485820, 0100782A, 08000002;
+//20080003, 200E0004, 01CE5020, 8D2B0003, AD280008, 01685820, 012A602A, 08000002;
+				32'h00000000: inst_in = 32'h2008FFFF;
+				32'h00000004: inst_in = 32'h200E0004;
+				32'h00000008: inst_in = 32'h01CE5020;
+				32'h0000000c: inst_in = 32'h8D0A0003;
+				32'h00000010: inst_in = 32'hAD0C0008;
+				32'h00000014: inst_in = 32'h01485820;
+				32'h00000018: inst_in = 32'h0100782A;
 				32'h0000001c: inst_in = 32'h08000002;
 				
 			endcase
