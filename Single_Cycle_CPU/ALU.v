@@ -27,15 +27,25 @@ module ALU(A, B, ALUop, zero, result);
 	initial begin
 		  result = 0;
 	end
+	reg res;
+	wire [31:0]S;
+	assign S = A - B;
+	always@* begin
+		if(A[31] == 1 && B[31] == 1 || A[31] == 0 && B[31] == 0)
+			res = S[31];
+		else if(A[31] == 1 && B[31] == 0)
+			res = 1;
+		else
+			res = 0;
+	end
 	assign zero = (result ? 0 : 1);
-	slt32 slt(.A(A), .B(B), .S(A + B), .slt(res));
 	always @(A or B or ALUop) begin
 	 case(ALUop)
 		3'b000: result = A & B;
 		3'b001: result = A | B;
 		3'b010: result = A + B;
 		3'b011: result = A ^ B;
-		3'b100: result = !(A | B);			// nor
+		3'b100: result = ~(A | B);			// nor
 		3'b101: result = A << B[10:6];	// srl
 		3'b110: result = A - B;
 		3'b111: result = res;

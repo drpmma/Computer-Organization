@@ -54,85 +54,12 @@ module control(
 	assign Jal = (opcode == 6'h3) ? 1 : 0;
 	assign Jr = ((funct == 6'h8 || funct == 6'h9) && opcode == 6'h0) ? 1 : 0;			// Jr and Jalr
 	assign shift = (opcode == 6'h0 && funct == 6'h0) ? 1 : 0;
-	assign ALUop[2] = ( ((funct == 6'b100010 || funct == 6'b101010 ||  funct == 6'h0) && opcode == 6'h0) || opcode == 6'h4 || opcode == 6'h5 || opcode == 6'ha) 
+	assign ALUop[2] = ( ((funct == 6'b100010 || funct == 6'b101010 ||  funct == 6'h0 || funct == 6'h27) && opcode == 6'h0) || opcode == 6'h4 || opcode == 6'h5 || opcode == 6'ha) 
 						? 1 : 0;
 	assign ALUop[1] = ( ((funct == 6'b100000 || funct == 6'b100010 || funct == 6'b101010 || funct == 6'h26) && opcode == 6'h0) || opcode == 6'h23 
 						|| opcode == 6'h2b || opcode == 6'h4 || opcode == 6'h5 || opcode == 6'h8 || opcode == 6'he || opcode == 6'ha)
 						? 1 : 0;
 	assign ALUop[0] = ( ((funct == 6'b100101 || funct == 6'b101010 || funct == 6'h0 || funct == 6'h26) && opcode == 6'h0) || opcode == 6'hd || opcode == 6'ha
 						|| opcode == 6'he) ? 1 : 0;
-
-
-	// initial begin
-	//   RegDst = 0;
-	//   Branch = 0;
-	//   MemRead = 0;
-	//   MemWrite = 0;
-	//   ALUop = 0;
-	//   MemWrite = 0;
-	//   ALUSrc = 0;
-	//   RegWrite = 0;
-	//   Jump = 0;
-	//   BNE = 0;
-	// end
-
-	// always@ (opcode or funct) begin
-	// 	if (opcode == 6'b000000) begin		// Rtype
-	// 		RegDst = 1;
-	// 		RegWrite = 1;
-	// 		if(funct == 6'b100000)		// add
-	// 			ALUop = 3'b010;
-	// 		else if(funct == 6'b100010)	// sub
-	// 			ALUop = 3'b110;
-	// 		else if(funct == 6'b100100)	// and
-	// 			ALUop = 3'b000;
-	// 		else if(funct == 6'b100101)	// or
-	// 			ALUop = 3'b001;
-	// 		else if(funct == 6'b101010)	// slt
-	// 			ALUop = 3'b111;
-	// 		else if(funct == 6'b000010)	// srl of sll
-	// 			ALUop = 3'b101;
-	// 		else if(funct == 6'h26)		// xor
-	// 			ALUop = 3'b011;
-	// 	end
-	// 	if (opcode == 6'h23) begin	// lw
-	// 		RegWrite = 1;
-	// 		ALUSrc = 1;
-	// 		MemtoReg = 1;
-	// 		ALUop = 3'b010;
-	// 	end
-	// 	if (opcode == 6'h2b) begin	// sw
-	// 		ALUSrc = 1;
-	// 		MemWrite = 1;
-	// 		ALUop = 3'b010;
-	// 	end
-	// 	if (opcode == 6'h4) begin	// beq
-	// 		ALUop = 3'b110;
-	// 		Branch = 1;
-	// 	end
-	// 	if (opcode == 6'h5) begin	// bne
-	// 		ALUop = 3'b110;
-	// 		BNE = 1;
-	// 		Branch = 1;
-	// 	end
-	// 	if (opcode == 6'h2) begin	// j
-	// 		Jump = 1;
-	// 	end
-	// 	if (opcode == 6'h8 || opcode == 6'hc || opcode == 6'hd || opcode == 6'ha) begin
-	// 		RegWrite = 1;
-	// 		ALUSrc = 1;
-	// 		if (opcode == 6'h8)				// addi
-	// 			ALUop = 3'b010;
-	// 		else if (opcode == 6'hc)		// andi
-	// 			ALUop = 3'b000;
-	// 		else if (opcode == 6'hd)		// ori
-	// 			ALUop = 3'b001;
-	// 		else if (opcode == 6'ha)		// slti
-	// 			ALUop = 3'b111;
-	// 		else if (opcode == 6'he)		// xori
-	// 			ALUop = 3'b011;
-	// 	end
-	// end
-
 
 endmodule
