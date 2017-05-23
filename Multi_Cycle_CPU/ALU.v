@@ -1,9 +1,9 @@
-module (
-    input A,
-    input B,
-    input ALUcontrol,
-    output Zero,
-    output ALUOut
+module ALU(
+    input [31:0]A,
+    input [31:0]B,
+    input [3:0]ALUcontrol,
+    output reg Zero,
+    output reg [31:0]ALUOut
 );
     parameter AND = 4'd0;
     parameter OR = 4'd1;
@@ -15,10 +15,9 @@ module (
     parameter SLT = 4'd7;
     parameter NOR = 4'd0;
     parameter XOR = 4'd0;
-
-    reg [31:0] ALUOut;
-    reg Zero;
-
+	 
+	 wire [31:0]S;
+	 assign S = A - B;
     always @(A or B or ALUcontrol) begin
       case (ALUcontrol)
         AND: ALUOut = A & B;
@@ -30,7 +29,7 @@ module (
         SUB: ALUOut = A - B;
         SLT: ALUOut = (A[31] == 1 && B[31] == 0) ?
                         1 : ((A[31] == 0 && B[31] == 1) ? 
-                        0 : ((A - B < 0) ? 1 : 0));
+                        0 : S[31]);
         NOR: ALUOut = ~(A | B);
         XOR: ALUOut = A ^ B; 
       endcase

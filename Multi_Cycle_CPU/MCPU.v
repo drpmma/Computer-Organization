@@ -32,7 +32,7 @@ module MCPU(
     REG32 PC(.clk(clk), .rst(reset), .CE(), .D(), .Q());
     
     wire [31:0]ALUOut;
-    REG32 ALUOut(.clk(clk), .rst(1'b0), .CE(1'b1), .D(res), .Q(ALUOut));
+    REG32 ALUout(.clk(clk), .rst(1'b0), .CE(1'b1), .D(res), .Q(ALUOut));
 
 
 endmodule
