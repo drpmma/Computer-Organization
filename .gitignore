@@ -1,4 +1,5 @@
 /*
-!*.v
+!/Multi_Cycle_CPU/*.v
+!/Single_Cycle_CPU/*.v
 !README.md
 !.gitignore

@@ -28,6 +28,7 @@ module MCPU(
     wire Zero;
     wire [31:0]PC_in;
     wire [31:0]Jump_addr;
+    wire [31:0]m_addr;
 //------- assign -----------------------
     assign inst_out = inst;
     assign Data_out = data_B;
@@ -49,6 +50,7 @@ module MCPU(
     wire Branch;
     wire PCWrite;
     wire [1:0]PCSrc;
+    wire IorD;
 
 
     REG32 IR(.clk(clk), .rst(reset), .CE(IRWrite), .D(), .Q(inst));                              //
@@ -73,6 +75,8 @@ module MCPU(
     REG32 PC(.clk(clk), .rst(reset), .CE(branch4), .D(PC_in), .Q(PC_now));
     
     REG32 ALUout(.clk(clk), .rst(1'b0), .CE(1'b1), .D(res), .Q(ALUOut));
+    MUX2T1_32 mux_m_addr(.s(IorD), .I0(PC_now), .I1(ALUOut), .o(m_addr));
+    
 
 
 endmodule
