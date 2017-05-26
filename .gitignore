@@ -1,5 +1,10 @@
 /*
-!/Multi_Cycle_CPU/*.v
+!/Single_Cycle_CPU/
+!/Multi_Cycle_CPU/
+/Single_Cycle_CPU/*
+/Multi_Cycle_CPU/*
 !/Single_Cycle_CPU/*.v
+!/Multi_Cycle_CPU/*.v
+
 !README.md
 !.gitignore
