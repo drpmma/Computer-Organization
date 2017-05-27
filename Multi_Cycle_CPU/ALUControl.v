@@ -24,6 +24,8 @@ module ALUControl(ALUControl, OpCode, FUNCT, ALUOp);
     parameter ADDI = 6'd8;
     parameter ORI = 6'hd;
     parameter XORI = 6'he;
+    parameter ANDI = 6'dc;
+
     reg [3:0] ALUControl;
 
     /*
@@ -46,6 +48,11 @@ module ALUControl(ALUControl, OpCode, FUNCT, ALUOp);
             IMM: begin
                 case (OpCode)
                     LUI: ALUControl = 4'd5;
+                    SLTI: ALUControl = 4'd7;
+                    ADDI: ALUControl = 4'd2;
+                    ANDI: ALUControl = 4'd0;
+                    ORI: ALUControl = 4'd1;
+                    XORI: ALUControl = 4'd9;
                 endcase
             end
             RTYPE: begin
