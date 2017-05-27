@@ -29,23 +29,31 @@ module MCPU(
     wire [31:0]PC_in;
     wire [31:0]Jump_addr;
     wire [31:0]m_addr;
+    wire [31:0]offset;
 //------- assign -----------------------
     assign inst_out = inst;
     assign Data_out = data_B;
+    assign Addr_out = m_addr;
+    assign PC_out = PC_now;
 //------- component --------------------
     assign branch1 = Branch & Zero;
     assign branch2 = branch1 & PCWriteCond;
     assign branch3 = PCWrite | branch2;
     assign branch4 = MIO_ready & branch3;
 
-    assign Jump_addr = {PC_now[31:28], inst[25:0], 2'b0};
+    assign Jump_addr = {PC_now[31:28], inst[25:0], 2'b00};
+    assign offset = {14'h0 ,inst[15:0] << 2, 2'h0};
 //------- control signals --------------
+    wire MemWrite;
+    wire MemRead;
     wire [1:0]RegDst;
+    wire RegWrite;
     wire IRWrite;
     wire [1:0]MemtoReg;
     wire ALUSrcA;
     wire [1:0]ALUSrcB;
     wire [3:0]ALUcontrol;
+    wire [1:0]ALUOp;
     wire PCWriteCond;
     wire Branch;
     wire PCWrite;
@@ -53,22 +61,44 @@ module MCPU(
     wire IorD;
 
 
-    REG32 IR(.clk(clk), .rst(reset), .CE(IRWrite), .D(), .Q(inst));                              //
+    REG32 IR(.clk(clk), .rst(reset), .CE(IRWrite), .D(Data_in), .Q(inst));                              
 
     MUX4T1_5 mux_waddr(.s(RegDst), .I0(inst[20:16]), .I1(inst[15:11]), .I2(), .I3(), .o(w_addr));//
     
-    REG32 MDR(.clk(clk), .rst(1'b0), .CE(1'b1), .D(), .Q(memory));
+    REG32 MDR(.clk(clk), .rst(1'b0), .CE(1'b1), .D(Data_in), .Q(memory));
     MUX4T1_32 mux_wdata(.s(MemtoReg), .I0(ALUOut), .I1(memory), .I2(), .I3(), .o(w_data));      //
 
     Ext_32 Ext_32(.imm_16(inst[15:0]), .signal(), .Imm_32(Imm_32));
     regs REG(.clk(clk), .rst(rst), .reg_Rd_addr_A(inst[25:21]), .reg_Rt_addr_B(inst[20:16]), 
-            .reg_Wt_addr(w_addr), .wdata(w_data), .we(), .rdata_A(data_A), .rdata_B(data_B));         //
+            .reg_Wt_addr(w_addr), .wdata(w_data), .we(RegWrite), .rdata_A(data_A), .rdata_B(data_B));
 
 
     MUX2T1_32 mux_alu_a(.s(ALUSrcA), .I0(PC_now), .I1(data_A), .o(ALU_A));
-    MUX4T1_32 mux_alu_b(.s(ALUSrcB), .I0(data_B), .I1(32'd4), .I2(Imm_32), .I3(), .o(ALU_B));  //
+    MUX4T1_32 mux_alu_b(.s(ALUSrcB), .I0(data_B), .I1(32'd4), .I2(Imm_32), .I3(offset), .o(ALU_B));  //
 
-
+    control instance_name (
+    .clk(clk), 
+    .opcode(inst[31:26]), 
+    .funct(inst[5:0]), 
+    .reset(reset), 
+    .MIO_ready(MIO_ready), 
+    .MemRead(MemRead), 
+    .MemWrite(MemWrite), 
+    .RegDst(RegDst), 
+    .RegWrite(RegWrite), 
+    .IRWrite(IRWrite), 
+    .MemtoReg(MemtoReg), 
+    .ALUSrcA(ALUSrcA), 
+    .ALUSrcB(ALUSrcB), 
+    .PCWriteCond(PCWriteCond), 
+    .Branch(Branch), 
+    .PCWrite(PCWrite), 
+    .PCSrc(PCSrc), 
+    .IorD(IorD), 
+    .state(state), 
+    .ALUOp(ALUOp)
+    );
+    ALUControl ALUctrl(.ALUControl(ALUcontrol), .OpCode(inst[31:26]), .FUNCT(inst[5:0]), .ALUOp(ALUOp));
     ALU U1(.A(ALU_A), .B(ALU_B), .ALUcontrol(ALUcontrol), .Zero(Zero), .ALUOut(res));
 
     MUX4T1_32 mux_pc(.s(PCSrc), .I0(res), .I1(ALUOut), .I2(Jump_addr), .I3(), .o(PC_in));      //

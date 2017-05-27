@@ -13,8 +13,8 @@ module ALU(
     parameter LUI = 4'd5;
     parameter SUB = 4'd6;
     parameter SLT = 4'd7;
-    parameter NOR = 4'd0;
-    parameter XOR = 4'd0;
+    parameter NOR = 4'd8;
+    parameter XOR = 4'd9;
 	 
 	 wire [31:0]S;
 	 assign S = A - B;
