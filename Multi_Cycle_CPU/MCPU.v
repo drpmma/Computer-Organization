@@ -35,6 +35,7 @@ module MCPU(
     assign Data_out = data_B;
     assign Addr_out = m_addr;
     assign PC_out = PC_now;
+    assign mem_w = ~MemRead & MemWrite;
 //------- component --------------------
     assign branch = ((BranchNotEqual ^ Zero) & PCWriteCond) | PCWrite & MIO_ready;
 
