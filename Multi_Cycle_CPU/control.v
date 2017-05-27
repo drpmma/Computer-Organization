@@ -38,7 +38,9 @@ module control(
     parameter BranchCompletion = 5'd13;
     parameter BNECompletion = 5'd14;
     parameter Exec_LUI = 5'd15;
-    parameter Exec_JAL = 5'd16;
+    parameter JALCompletion = 5'd16;
+    parameter JRCompletion = 5'd17;
+    parameter JALRCompletion = 5'd18;
 
 //------------ opcode -------------
     parameter RTYPE = 6'h0;
@@ -54,6 +56,9 @@ module control(
     parameter ORI = 6'hd;
     parameter XORI = 6'he;
     parameter SLTI = 6'ha;
+//------------ funct -------------
+    parameter JR = 6'd8;
+    parameter JALR = 6'd9;
 
     always @(posedge clk or posedge reset) begin
       if(reset == 1) state = IF;
@@ -62,8 +67,8 @@ module control(
           IF: if(MIO_ready) state = ID;
               else state = IF;
           ID: case (opcode)
-                RTYPE: state = Execution;
-                
+                RTYPE: state = Execution; 
+
                 LW: state = ComputeAddr;
                 SW: state = ComputeAddr;
                 
@@ -75,13 +80,18 @@ module control(
                 LUI: state = Exec_LUI;
 
                 J: state = JumpCompletion;
-                JAL: state = Exec_JAL;
+                JAL: state = JALCompletion;
 
                 BEQ: state = BranchCompletion;
                 BNE: state = BNECompletion;
           endcase
-          Execution: state = RTYPECompletion;
-
+          Execution: begin
+            case (funct)
+              JR: state = JRCompletion;
+              JALR: state = JALRCompletion;
+              default: state = RTYPECompletion;
+            endcase
+          end
           RTYPECompletion: state = IF;
           ComputeAddr: begin
             case (opcode)
@@ -99,7 +109,9 @@ module control(
           BranchCompletion: state = IF;
           BNECompletion: state = IF;
           JumpCompletion: state = IF;
-          Exec_JAL: state = IF;
+          JALCompletion: state = IF;
+          JRCompletion: state = IF;
+          JALRCompletion: state = IF;
           default: state = IF;
         endcase
       end
@@ -207,9 +219,21 @@ module control(
           PCWrite = 1;
           PCSrc = 2'b10;
         end
-        Exec_JAL: begin
+        JALCompletion: begin
           PCWrite = 1;
           PCSrc = 2'b10;
+          RegDst = 2'b10;
+          RegWrite = 1;
+          MemtoReg = 2'b10;
+        end
+
+        JRCompletion: begin
+          PCSrc = 2'b01;
+          PCWrite = 1;
+        end
+        JALRCompletion: begin
+          PCSrc = 2'b01;
+          PCWrite = 1;
           RegDst = 2'b10;
           RegWrite = 1;
           MemtoReg = 2'b10;

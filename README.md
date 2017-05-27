@@ -32,5 +32,7 @@
     
 > Multi-Cycle CPU for MIPS
 
+    Support the instructions above.
+
 > The Project for course
 

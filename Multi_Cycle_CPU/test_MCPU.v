@@ -64,10 +64,9 @@ module test_MCPU;
 		INT = 0;
 		Data_in = 0;
 		i = 0;
-
+		#50
 		// Wait 100 ns for global reset to finish
-		#100;
-      MIO_ready = 1;
+      	MIO_ready = 1;
 		reset = 0;
 		forever begin
 			#50;
@@ -98,6 +97,7 @@ module test_MCPU;
 				32'h00000008:Data_in = 32'h8D2A0004;
 				32'h0000000c:Data_in = 32'hAD090000;
 				-------------------------------------------*/
+			/*--------------test for jal Itype lui --------
 				32'h00000000:Data_in = 32'h2009000A;
 				32'h00000004:Data_in = 32'h200AFFFB;
 				32'h00000008:Data_in = 32'h152A0000;
@@ -106,6 +106,11 @@ module test_MCPU;
 				32'h00000014:Data_in = 32'h39280005;
 				32'h00000018:Data_in = 32'h3C0B0006;
 				32'h0000001c:Data_in = 32'h0C000002;
+				-------------------------------------------*/
+				32'h00000000:Data_in = 32'h20090008;
+				32'h00000004:Data_in = 32'h200A000A;
+				32'h00000008:Data_in = 32'h08000003;
+				32'h0000000c:Data_in = 32'h01200009;
 
 
 			endcase
