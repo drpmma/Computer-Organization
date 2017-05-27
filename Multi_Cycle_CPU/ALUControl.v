@@ -20,7 +20,6 @@ module ALUControl(ALUControl, OpCode, FUNCT, ALUOp);
 
     // OpCodes
     parameter LUI = 6'd15;
-    parameter SLTI = 6'd10;
 
     reg [3:0] ALUControl;
 
@@ -42,24 +41,23 @@ module ALUControl(ALUControl, OpCode, FUNCT, ALUOp);
             ADD: ALUControl = 4'd2;
             SUB: ALUControl = 4'd6;
             IMM: begin
-            case (OpCode)
-                LUI: ALUControl = 4'd5;
-                SLTI: ALUControl = 4'd7;
-        endcase
-        end
-        RTYPE: begin
-            case (FUNCT)
-                F_AND: ALUControl = 4'd0;
-                F_OR: ALUControl = 4'd1;
-                F_ADD: ALUControl = 4'd2;
-                F_SUB: ALUControl = 4'd6;
-                F_SLT: ALUControl = 4'd7;
-                F_NOR: ALUControl = 4'd8;
-                F_XOR: ALUControl = 4'd9;
-                F_SLL: ALUControl = 4'd3;
-                F_SRL: ALUControl = 4'd4;
-            endcase
-        end
+                case (OpCode)
+                    LUI: ALUControl = 4'd5;
+                endcase
+            end
+            RTYPE: begin
+                case (FUNCT)
+                    F_AND: ALUControl = 4'd0;
+                    F_OR: ALUControl = 4'd1;
+                    F_ADD: ALUControl = 4'd2;
+                    F_SUB: ALUControl = 4'd6;
+                    F_SLT: ALUControl = 4'd7;
+                    F_NOR: ALUControl = 4'd8;
+                    F_XOR: ALUControl = 4'd9;
+                    F_SLL: ALUControl = 4'd3;
+                    F_SRL: ALUControl = 4'd4;
+                endcase
+            end
         endcase
     end
 endmodule
