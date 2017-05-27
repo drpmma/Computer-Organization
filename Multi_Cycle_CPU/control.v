@@ -171,13 +171,13 @@ module control(
         ComputeImm: begin
           ALUSrcA = 1;
           ALUSrcB = 2'b10;
-          ALUOp = 2'b10;
+          ALUOp = 2'b11;
         end
         ComputeImmu: begin
           signal = 1;
           ALUSrcA = 1;
           ALUSrcB = 2'b10;
-          ALUOp = 2'b10;
+          ALUOp = 2'b11;
         end
         ITYPECompletion: begin
           RegDst = 0;

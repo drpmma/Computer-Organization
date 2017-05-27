@@ -20,7 +20,10 @@ module ALUControl(ALUControl, OpCode, FUNCT, ALUOp);
 
     // OpCodes
     parameter LUI = 6'd15;
-
+    parameter SLTI = 6'd10;
+    parameter ADDI = 6'd8;
+    parameter ORI = 6'hd;
+    parameter XORI = 6'he;
     reg [3:0] ALUControl;
 
     /*
