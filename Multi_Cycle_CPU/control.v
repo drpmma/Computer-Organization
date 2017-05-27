@@ -14,7 +14,7 @@ module control(
     output reg ALUSrcA,
     output reg [1:0]ALUSrcB,
     output reg PCWriteCond,
-    output reg BNE,
+    output reg BranchNotEqual,
     output reg PCWrite,
     output reg [1:0]PCSrc,
     output reg IorD,
@@ -112,7 +112,6 @@ module control(
       MemWrite = 0;
       IRWrite = 0;
       RegWrite = 0;
-      Branch = 0;
       ALUOp = 2'b00;
       signal = 0;
       // muxes
@@ -194,9 +193,9 @@ module control(
         end
         BNECompletion: begin
           ALUSrcA = 1;
-          ALUSrcB = 2'b10;
+          ALUSrcB = 2'b00;
           ALUOp = 2'b01;
-          BNE = 1;
+          BranchNotEqual = 1;
           PCWriteCond = 1;
           PCSrc = 2'b01;
         end

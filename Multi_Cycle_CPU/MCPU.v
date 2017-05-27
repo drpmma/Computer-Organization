@@ -36,7 +36,7 @@ module MCPU(
     assign Addr_out = m_addr;
     assign PC_out = PC_now;
 //------- component --------------------
-    assign branch = ((BNE ^ Zero) & PCWriteCond) | PCWrite & MIO_ready;
+    assign branch = ((BranchNotEqual ^ Zero) & PCWriteCond) | PCWrite & MIO_ready;
 
     assign Jump_addr = {PC_now[31:28], inst[25:0], 2'b00};
     assign offset = {14'h0 ,inst[15:0] << 2, 2'h0};
@@ -89,7 +89,7 @@ module MCPU(
     .ALUSrcA(ALUSrcA), 
     .ALUSrcB(ALUSrcB), 
     .PCWriteCond(PCWriteCond), 
-    .BNE(BNE), 
+    .BranchNotEqual(BranchNotEqual), 
     .PCWrite(PCWrite), 
     .PCSrc(PCSrc), 
     .IorD(IorD), 
