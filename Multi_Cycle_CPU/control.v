@@ -211,6 +211,7 @@ module control(
           PCWrite = 1;
           PCSrc = 2'b10;
           RegDst = 2'b10;
+          RegWrite = 1;
           MemtoReg = 2'b10;
         end
 //        default: 

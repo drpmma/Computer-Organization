@@ -24,7 +24,7 @@ module ALUControl(ALUControl, OpCode, FUNCT, ALUOp);
     parameter ADDI = 6'd8;
     parameter ORI = 6'hd;
     parameter XORI = 6'he;
-    parameter ANDI = 6'dc;
+    parameter ANDI = 6'hc;
 
     reg [3:0] ALUControl;
 
