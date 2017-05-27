@@ -81,11 +81,28 @@ module control(
         //     endcase
         //   end
         //   ComputeImm: state = 
+          default: state = IF;
         endcase
       end
     end
 
     always @(state) begin
+      PCWriteCond = 0;
+      PCWrite = 0;
+      MemRead = 0;
+      MemWrite = 0;
+      IRWrite = 0;
+      RegWrite = 0;
+      Branch = 0;
+      ALUOp = 2'b00;
+
+      // muxes
+      IorD = 0;
+      MemtoReg = 2'b00;
+      PCSrc = 2'b00;
+      ALUSrcB = 2'b00;
+      ALUSrcA = 0;
+      RegDst = 2'b00;
       case (state)
         IF: begin
           MemRead = 1;
