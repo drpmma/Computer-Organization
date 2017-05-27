@@ -68,7 +68,7 @@ module MCPU(
     REG32 MDR(.clk(clk), .rst(1'b0), .CE(1'b1), .D(Data_in), .Q(memory));
     MUX4T1_32 mux_wdata(.s(MemtoReg), .I0(ALUOut), .I1(memory), .I2(), .I3(), .o(w_data));      //
 
-    Ext_32 Ext_32(.imm_16(inst[15:0]), .signal(), .Imm_32(Imm_32));
+    Ext_32 Ext_32(.imm_16(inst[15:0]), .signal(signal), .Imm_32(Imm_32));
     regs REG(.clk(clk), .rst(rst), .reg_Rd_addr_A(inst[25:21]), .reg_Rt_addr_B(inst[20:16]), 
             .reg_Wt_addr(w_addr), .wdata(w_data), .we(RegWrite), .rdata_A(data_A), .rdata_B(data_B));
 
@@ -82,6 +82,7 @@ module MCPU(
     .funct(inst[5:0]), 
     .reset(reset), 
     .MIO_ready(MIO_ready), 
+    .signal(signal),
     .MemRead(MemRead), 
     .MemWrite(MemWrite), 
     .RegDst(RegDst), 

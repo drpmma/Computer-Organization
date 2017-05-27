@@ -80,6 +80,7 @@ module test_MCPU;
 		
 		always @(PC_out) begin
 			case(PC_out)
+			/*--------------test for Rtype----------------
 				32'h00000000:Data_in = 32'h00004027;
 				32'h00000004:Data_in = 32'h00004827;
 				32'h00000008:Data_in = 32'h01285020;
@@ -90,6 +91,13 @@ module test_MCPU;
 				32'h0000001c:Data_in = 32'h014B782A;
 				32'h00000020:Data_in = 32'h014BC02A;
 				32'h00000024:Data_in = 32'h000A8000;
+				-------------------------------------------*/
+				
+				32'h00000000:Data_in = 32'h00004027;
+				32'h00000004:Data_in = 32'h00004820;
+				32'h00000008:Data_in = 32'h8D2A0004;
+				32'h0000000c:Data_in = 32'hAD090000;
+
 			endcase
 			i = i + 1;
 		end

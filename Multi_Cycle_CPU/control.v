@@ -4,6 +4,7 @@ module control(
     input [5:0]funct,
     input reset,
     input MIO_ready,
+    output reg signal,
     output reg MemRead,
     output reg MemWrite,
     output reg [1:0]RegDst,
@@ -30,6 +31,9 @@ module control(
     parameter ComputeImmSignal = 5'd11;
     parameter JumpCompletion = 5'd9;
     parameter RTYPECompletion = 5'd7;
+    parameter MemReadAccess = 5'd3;
+    parameter MemWriteAccess = 5'd5;
+    parameter WriteBack = 5'd4;
 
 //------------ opcode -------------
     parameter RTYPE = 6'h0;
@@ -55,8 +59,8 @@ module control(
           ID: case (opcode)
                 RTYPE: state = Execution;
                 
-                // LW: state = ComputeAddr;
-                // SW: state = ComputeAddr;
+                LW: state = ComputeAddr;
+                SW: state = ComputeAddr;
                 
                 // ADDI: state = ComputeImmSignal;
                 // ANDI: state = ComputeImm;
@@ -74,13 +78,16 @@ module control(
           Execution: state = RTYPECompletion;
 
           RTYPECompletion: state = IF;
-        //   ComputeAddr: begin
-        //     case (opcode)
-        //       LW: state = MemReadAccess;
-        //       SW: state = MemWriteAccess;
-        //     endcase
-        //   end
-        //   ComputeImm: state = 
+          ComputeAddr: begin
+            case (opcode)
+              LW: state = MemReadAccess;
+              SW: state = MemWriteAccess;
+            endcase
+          end
+          // ComputeImm: state =
+          MemReadAccess: state = WriteBack;
+          MemWriteAccess: state = IF;
+          WriteBack: state = IF;
           default: state = IF;
         endcase
       end
@@ -95,7 +102,7 @@ module control(
       RegWrite = 0;
       Branch = 0;
       ALUOp = 2'b00;
-
+      signal = 0;
       // muxes
       IorD = 0;
       MemtoReg = 2'b00;
@@ -127,10 +134,28 @@ module control(
           ALUOp = 2'b10;
         end
 
-        RTYPECompletion:begin
+        RTYPECompletion: begin
           RegDst = 2'b01;
           RegWrite = 1;
           MemtoReg = 0;
+        end
+        ComputeAddr: begin
+          ALUSrcA = 1;
+          ALUSrcB = 2'b10;
+          ALUOp = 2'b00;
+        end
+        MemWriteAccess:begin
+          MemWrite = 1;
+          IorD = 1;
+        end
+        MemReadAccess: begin
+          MemRead = 1;
+          IorD = 1;
+        end 
+        WriteBack: begin
+          RegDst = 2'b00;
+          RegWrite = 1;
+          MemtoReg = 1;
         end
 //        default: 
       endcase
