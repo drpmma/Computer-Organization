@@ -1,6 +1,7 @@
 module ALU(
     input [31:0]A,
     input [31:0]B,
+    input [4:0]Shamt,
     input [3:0]ALUcontrol,
     output reg Zero,
     output reg [31:0]ALUOut
@@ -23,8 +24,8 @@ module ALU(
         AND: ALUOut = A & B;
         OR: ALUOut = A | B;
         ADD: ALUOut = A + B;
-        SLL: ALUOut = A << B[10:6];
-        SRL: ALUOut = A >> B[10:6];
+        SLL: ALUOut = B << Shamt;
+        SRL: ALUOut = B >> Shamt;
         LUI: ALUOut = {B, 16'd0};
         SUB: ALUOut = A - B;
         SLT: ALUOut = (A[31] == 1 && B[31] == 0) ?

@@ -118,6 +118,7 @@ module control(
     end
 
     always @(state) begin
+      BranchNotEqual = 0;
       PCWriteCond = 0;
       PCWrite = 0;
       MemRead = 0;
@@ -198,7 +199,7 @@ module control(
         end
         BranchCompletion: begin
           ALUSrcA = 1;
-          ALUSrcB = 2'b10;
+          ALUSrcB = 2'b00;
           ALUOp = 2'b01;
           PCWriteCond = 1;
           PCSrc = 2'b01;

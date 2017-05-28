@@ -40,7 +40,7 @@ module MCPU(
     assign branch = ((BranchNotEqual ^ Zero) & PCWriteCond) | PCWrite & MIO_ready;
 
     assign Jump_addr = {PC_now[31:28], inst[25:0], 2'b00};
-    assign offset = {14'h0 ,inst[15:0] << 2, 2'h0};
+    assign offset = Imm_32 << 2;
 //------- control signals --------------
     wire MemWrite;
     wire MemRead;
@@ -53,7 +53,6 @@ module MCPU(
     wire [3:0]ALUcontrol;
     wire [1:0]ALUOp;
     wire PCWriteCond;
-    wire Branch;
     wire PCWrite;
     wire [1:0]PCSrc;
     wire IorD;
@@ -98,7 +97,7 @@ module MCPU(
     .ALUOp(ALUOp)
     );
     ALUControl ALUctrl(.ALUControl(ALUcontrol), .OpCode(inst[31:26]), .FUNCT(inst[5:0]), .ALUOp(ALUOp));
-    ALU U1(.A(ALU_A), .B(ALU_B), .ALUcontrol(ALUcontrol), .Zero(Zero), .ALUOut(res));
+    ALU U1(.A(ALU_A), .B(ALU_B), .Shamt(inst[10:6]), .ALUcontrol(ALUcontrol), .Zero(Zero), .ALUOut(res));
 
     MUX4T1_32 mux_pc(.s(PCSrc), .I0(res), .I1(ALUOut), .I2(Jump_addr), .I3(), .o(PC_in));      //
     REG32 PC(.clk(clk), .rst(reset), .CE(branch), .D(PC_in), .Q(PC_now));
