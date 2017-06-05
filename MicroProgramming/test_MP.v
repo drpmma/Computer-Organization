@@ -4,15 +4,15 @@
 // Company: 
 // Engineer:
 //
-// Create Date:   11:03:39 05/27/2017
-// Design Name:   MCPU
-// Module Name:   E:/Study/Coumputer Science/s2/computer orgization/project/Multi_Cycle_CPU/test_MCPU.v
-// Project Name:  MCPU
+// Create Date:   21:21:37 06/05/2017
+// Design Name:   MicroProgramming
+// Module Name:   E:/Study/Coumputer Science/s2/computer orgization/project/MicroProgramming/test_MP.v
+// Project Name:  MicroProgramming
 // Target Device:  
 // Tool versions:  
 // Description: 
 //
-// Verilog Test Fixture created by ISE for module: MCPU
+// Verilog Test Fixture created by ISE for module: MicroProgramming
 //
 // Dependencies:
 // 
@@ -22,7 +22,7 @@
 // 
 ////////////////////////////////////////////////////////////////////////////////
 
-module test_MCPU;
+module test_MP;
 
 	// Inputs
 	reg clk;
@@ -41,7 +41,7 @@ module test_MCPU;
 	wire [4:0] state;
 
 	// Instantiate the Unit Under Test (UUT)
-	MCPU uut (
+	MicroProgramming uut (
 		.clk(clk), 
 		.reset(reset), 
 		.MIO_ready(MIO_ready), 
@@ -55,6 +55,7 @@ module test_MCPU;
 		.CPU_MIO(CPU_MIO), 
 		.state(state)
 	);
+
 	integer i;
 	initial begin
 		// Initialize Inputs
@@ -166,7 +167,5 @@ module test_MCPU;
 			endcase
 			i = i + 1;
 		end
-
-		
 endmodule
 

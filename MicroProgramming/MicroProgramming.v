@@ -1,4 +1,4 @@
-module MCPU(
+module MicroProgramming(
         input clk,
         input reset,
         input MIO_ready,

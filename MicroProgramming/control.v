@@ -4,24 +4,44 @@ module control(
     input [5:0]funct,
     input reset,
     input MIO_ready,
-    output reg signal,
-    output reg MemRead,
-    output reg MemWrite,
-    output reg [1:0]RegDst,
-    output reg RegWrite,
-    output reg IRWrite,
-    output reg [1:0]MemtoReg,
-    output reg ALUSrcA,
-    output reg [1:0]ALUSrcB,
-    output reg PCWriteCond,
-    output reg BranchNotEqual,
-    output reg PCWrite,
-    output reg [1:0]PCSrc,
-    output reg IorD,
+    output signal,
+    output MemRead,
+    output MemWrite,
+    output [1:0]RegDst,
+    output RegWrite,
+    output IRWrite,
+    output [1:0]MemtoReg,
+    output ALUSrcA,
+    output [1:0]ALUSrcB,
+    output PCWriteCond,
+    output BranchNotEqual,
+    output PCWrite,
+    output [1:0]PCSrc,
+    output IorD,
     output reg[4:0]state,
-    output reg [1:0]ALUOp
+    output [1:0]ALUOp
 );
-
+// ALUop[2] ALUSrcA[1] ALUSrcB[2] MemtoReg[2] Mem[2] PCSrc[2] PCWrite[1] PCWriteCond[1] BNE[1]
+// RegDst[2] RegW[1] IRW[1] signal[1] IorD[1]
+// 20
+//------------ wire ---------------
+	wire [19:0]CtrlSignal;
+//------------ state --------------
+   assign ALUOp = CtrlSignal[19:18];
+	assign ALUSrcA =  CtrlSignal[17];
+	assign ALUSrcB =  CtrlSignal[16:15];
+	assign MemtoReg =  CtrlSignal[14:13];
+	assign MemRead =  CtrlSignal[12];
+	assign MemWrite =  CtrlSignal[11];
+	assign PCSrc =  CtrlSignal[10:9];
+	assign PCWrite =  CtrlSignal[8];
+	assign PCWriteCond =  CtrlSignal[7];
+	assign BranchNotEqual =  CtrlSignal[6];
+	assign RegDst =  CtrlSignal[5:4];
+	assign RegWrite =  CtrlSignal[3];
+	assign IRWrite =  CtrlSignal[2];
+	assign signal =  CtrlSignal[1];
+	assign IorD =  CtrlSignal[0];
 //------------ state --------------
     parameter IF = 5'd0;
     parameter ID = 5'd1;
@@ -59,7 +79,8 @@ module control(
 //------------ funct -------------
     parameter JR = 6'd8;
     parameter JALR = 6'd9;
-
+//------------ always ------------
+	SignalMemory SMem(.a(state), .spo(CtrlSignal));
     always @(posedge clk or posedge reset) begin
       if(reset == 1) state = IF;
       else begin
@@ -116,130 +137,26 @@ module control(
         endcase
       end
     end
-
-    always @(state) begin
-      BranchNotEqual = 0;
-      PCWriteCond = 0;
-      PCWrite = 0;
-      MemRead = 0;
-      MemWrite = 0;
-      IRWrite = 0;
-      RegWrite = 0;
-      ALUOp = 2'b00;
-      signal = 0;
-      // muxes
-      IorD = 0;
-      MemtoReg = 2'b00;
-      PCSrc = 2'b00;
-      ALUSrcB = 2'b00;
-      ALUSrcA = 0;
-      RegDst = 2'b00;
-      case (state)
-        IF: begin
-          MemRead = 1;
-          IRWrite = 1;
-          PCWrite = 1;
-
-          ALUSrcA = 0;
-          ALUSrcB = 2'b01;
-          PCSrc = 2'b00;
-          IorD = 0;
-          ALUOp = 2'b00; // ADD
-        end
-        ID: begin
-          ALUSrcA = 0;
-          ALUSrcB = 2'b11;
-          ALUOp = 2'b00; // ADD
-        end
-
-        Execution: begin
-          ALUSrcA = 1;
-          ALUSrcB = 2'b00;
-          ALUOp = 2'b10;
-        end
-
-        RTYPECompletion: begin
-          RegDst = 2'b01;
-          RegWrite = 1;
-          MemtoReg = 2'b00;
-        end
-        ComputeAddr: begin
-          ALUSrcA = 1;
-          ALUSrcB = 2'b10;
-          ALUOp = 2'b00;
-        end
-        MemWriteAccess:begin
-          MemWrite = 1;
-          IorD = 1;
-        end
-        MemReadAccess: begin
-          MemRead = 1;
-          IorD = 1;
-        end 
-        WriteBack: begin
-          RegDst = 2'b00;
-          RegWrite = 1;
-          MemtoReg = 2'b01;
-        end
-        ComputeImm: begin
-          ALUSrcA = 1;
-          ALUSrcB = 2'b10;
-          ALUOp = 2'b11;
-        end
-        ComputeImmu: begin
-          signal = 1;
-          ALUSrcA = 1;
-          ALUSrcB = 2'b10;
-          ALUOp = 2'b11;
-        end
-        ITYPECompletion: begin
-          RegDst = 0;
-          RegWrite = 1;
-          MemtoReg = 2'b00;
-        end
-        BranchCompletion: begin
-          ALUSrcA = 1;
-          ALUSrcB = 2'b00;
-          ALUOp = 2'b01;
-          PCWriteCond = 1;
-          PCSrc = 2'b01;
-        end
-        BNECompletion: begin
-          ALUSrcA = 1;
-          ALUSrcB = 2'b00;
-          ALUOp = 2'b01;
-          BranchNotEqual = 1;
-          PCWriteCond = 1;
-          PCSrc = 2'b01;
-        end
-        Exec_LUI: begin
-          ALUOp = 2'b11;
-          ALUSrcB = 2'b10;
-        end
-        JumpCompletion: begin
-          PCWrite = 1;
-          PCSrc = 2'b10;
-        end
-        JALCompletion: begin
-          PCWrite = 1;
-          PCSrc = 2'b10;
-          RegDst = 2'b10;
-          RegWrite = 1;
-          MemtoReg = 2'b10;
-        end
-
-        JRCompletion: begin
-          PCSrc = 2'b01;
-          PCWrite = 1;
-        end
-        JALRCompletion: begin
-          PCSrc = 2'b01;
-          PCWrite = 1;
-          RegDst = 2'b10;
-          RegWrite = 1;
-          MemtoReg = 2'b10;
-        end
-//        default: 
-      endcase
-    end
+// ALUop[2] ALUSrcA[1] ALUSrcB[2] MemtoReg[2] Mem[2] PCSrc[2] PCWrite[1] PCWriteCond[1] BNE[1]
+// RegDst[2] RegW[1] IRW[1] signal[1] IorD[1]
+// 20
+// 0 IF:00001001000100000100
+// 1 ID:00011000000000000000
+// 2 ComputeAddr:00110000000000000000
+// 3 MemWriteAccess:00000000100000000001
+// 4 MemReadAccess:00000001000000000001
+// 5 WriteBack:00000010000000001000
+// 6 Execution:10100000000000000000
+// 7 RTYPEC:00000000000000011000
+// 8 00000000000000000000
+// 9 JumpC:00000000010100000000
+//10 ComputeImm:11110000000000000000
+//11 ComputeImmu:11110000000000000010
+//12 ITYPEC:00000000000000001000
+//13 BranchC:01100000001010000000
+//14 BNEC:01100000001110000000
+//15 Exec_LUI:11010000000000000000
+//16 JALC:00000100010100101000
+//17 JR:00000000001100000000
+//18 JALR:00000100001110100000
 endmodule // control
