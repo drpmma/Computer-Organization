@@ -35,8 +35,12 @@ module control(
 			output signal,			// distinguish the expand of imm
 			output Jal,
 			output Jr,
-			output shift
+			output shift,
+			output eret
     );
+
+	// interrupt
+	assign eret = (funct == 6'b011000) ? 1 : 0;
 
 	assign RegDst = (opcode == 6'b000000) ? 1 : 0;
 	assign RegWrite = (opcode == 6'b000000 || opcode == 6'h23 || opcode == 6'h8 || opcode == 6'hc || opcode == 6'hd || opcode == 6'ha

@@ -36,3 +36,5 @@
 
 > The Project for course
 
+    MicroProgramming for Multi-Cycle CPU
+
