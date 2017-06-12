@@ -42,6 +42,7 @@ module SCPU(clk,
 	output mem_w;
 	output [31:0] PC_out;
 	
+	wire [31:0]pc;
 	wire [31:0]o_pc;
 	wire [31:0]i_pc;
 	wire [31:0]pc_4;
@@ -65,7 +66,18 @@ module SCPU(clk,
 	wire [31:0]off_s2;
 	wire [31:0]lui_off;
 	wire [31:0]jr_addr;
-	
+
+
+	Interrupt Int
+	(
+	 .clk(clk), 
+    .reset(reset), 
+    .INT(INT), 
+    .eret(eret), 
+    .pc_next(i_pc), 
+    .pc(pc)
+	);
+	single_pc PC(.clk(clk), .rst(reset), .i_pc(pc), .o_pc(o_pc));
 	single_pc PC(.clk(clk), .rst(reset), .i_pc(i_pc), .o_pc(o_pc));
 	assign PC_out = o_pc;
 
