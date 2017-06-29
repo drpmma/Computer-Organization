@@ -42,7 +42,6 @@ module SCPU(clk,
 	output mem_w;
 	output [31:0] PC_out;
 	
-	wire [31:0]pc;
 	wire [31:0]o_pc;
 	wire [31:0]i_pc;
 	wire [31:0]pc_4;
@@ -68,16 +67,6 @@ module SCPU(clk,
 	wire [31:0]jr_addr;
 
 
-	Interrupt Int
-	(
-	 .clk(clk), 
-    .reset(reset), 
-    .INT(INT), 
-    .eret(eret), 
-    .pc_next(i_pc), 
-    .pc(pc)
-	);
-	single_pc PC(.clk(clk), .rst(reset), .i_pc(pc), .o_pc(o_pc));
 	single_pc PC(.clk(clk), .rst(reset), .i_pc(i_pc), .o_pc(o_pc));
 	assign PC_out = o_pc;
 
@@ -85,7 +74,7 @@ module SCPU(clk,
 
 	control CTRL(.opcode(inst_in[31:26]), .funct(inst_in[5:0]), .RegDst(RegDst), .Branch(Branch), .MemRead(MemRead), .MemtoReg(MemtoReg), 
 				 .ALUop(ALUop), .MemWrite(MemWrite), .ALUSrc(ALUSrc), .RegWrite(RegWrite), .Jump(Jump), .BNE(BNE), .LUI(LUI), .signal(signal),
-				 .Jal(Jal), .Jr(Jr), .shift(shift), .eret(eret));
+				 .Jal(Jal), .Jr(Jr), .shift(shift));
 	assign mem_w = MemWrite;
 	
 	MUX2T1_32 mux2_32_shift(.I0(inst_in[25:21]), .I1(inst_in[20:16]), .s(shift), .o(reg_a));
